@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,9 +34,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "";
-var key = Encoding.ASCII.GetBytes(jwtKey);
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -46,41 +42,46 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme =
         JwtBearerDefaults.AuthenticationScheme;
 })
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
 
-        options.TokenValidationParameters =
-            new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey =
-                    new SymmetricSecurityKey(key),
+    options.MetadataAddress =
+        "http://keycloak:8080/realms/GestionOrdinateurs/.well-known/openid-configuration";
 
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-
-        options.Events = new JwtBearerEvents
+    options.TokenValidationParameters =
+        new TokenValidationParameters
         {
-            OnTokenValidated = context =>
-            {
-                Console.WriteLine(
-                    $"Utilisateur utilisant un Token Valide --- {context.Principal?.Identity?.Name ?? "Anonymous"}"
-                );
+            ValidateIssuerSigningKey = true,
 
-                return Task.CompletedTask;
-            },
+            ValidateIssuer = true,
+            ValidIssuer =
+                "http://localhost:8180/realms/GestionOrdinateurs",
 
-            OnAuthenticationFailed = context =>
-            {
-                Console.WriteLine("Token Invalide");
-
-                return Task.CompletedTask;
-            }
+            ValidateAudience = false
         };
-    });
+
+    options.Events = new JwtBearerEvents
+    {
+        OnTokenValidated = context =>
+        {
+            Console.WriteLine(
+                $"Utilisateur utilisant un Token Valide --- {context.Principal?.Identity?.Name ?? "Anonymous"}"
+            );
+
+            return Task.CompletedTask;
+        },
+
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine("Token Invalide");
+            Console.WriteLine(context.Exception.Message);
+
+            return Task.CompletedTask;
+        }
+    };
+});
 
 builder.Services.AddCors(options =>
 {

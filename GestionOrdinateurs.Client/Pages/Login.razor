@@ -1,3 +1,4 @@
+<!--
 @page "/login"
 
 @using System.Net.Http.Json
@@ -59,3 +60,89 @@
         public string Token { get; set; } = "";
     }
 }
+-->
+
+<!--La nouvelle version-->
+@page "/login"
+
+@using System.Net.Http.Json
+
+@inject IHttpClientFactory HttpClientFactory
+@inject Blazored.SessionStorage.ISessionStorageService SessionStorage
+@inject NavigationManager Navigation
+@inject JwtAuthenticationStateProvider AuthProvider
+
+<h3>Login</h3>
+
+<InputText @bind-Value="LoginUser"
+           class="form-control"
+           placeholder="Nom d'utilisateur" />
+
+<InputText @bind-Value="Password"
+           type="password"
+           class="form-control mt-2"
+           placeholder="Mot de passe" />
+
+<button class="btn btn-primary mt-2" @onclick="Connexion">
+    Connexion
+</button>
+
+@if (!string.IsNullOrEmpty(Message))
+{
+    <p>@Message</p>
+}
+
+@code
+{
+    private string LoginUser = "";
+    private string Password = "";
+    private string Message = "";
+
+    private async Task Connexion()
+    {
+        var client = HttpClientFactory.CreateClient();
+
+        var contenu = new FormUrlEncodedContent(new[]
+        {
+            new KeyValuePair<string, string>("client_id", "gestionordinateurs-client"),
+            new KeyValuePair<string, string>("username", LoginUser),
+            new KeyValuePair<string, string>("password", Password),
+            new KeyValuePair<string, string>("grant_type", "password")
+        });
+
+        var response = await client.PostAsync(
+            "http://localhost:8180/realms/GestionOrdinateurs/protocol/openid-connect/token",
+            contenu
+        );
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Message = "Nom d'utilisateur ou mot de passe incorrect";
+            return;
+        }
+
+        var resultat =
+            await response.Content.ReadFromJsonAsync<TokenResponse>();
+
+        if (resultat != null)
+        {
+            await SessionStorage.SetItemAsync(
+                "jwtToken",
+                resultat.AccessToken
+            );
+
+            AuthProvider.NotifyUserAuthentication(
+                resultat.AccessToken
+            );
+
+            Navigation.NavigateTo("/");
+        }
+    }
+
+    public class TokenResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("access_token")]
+        public string AccessToken { get; set; } = "";
+    }
+}
+

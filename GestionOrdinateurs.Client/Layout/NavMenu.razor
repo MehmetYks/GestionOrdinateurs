@@ -1,6 +1,5 @@
 ﻿@inject NavigationManager Navigation
 @inject Blazored.SessionStorage.ISessionStorageService SessionStorage
-@inject IJSRuntime JS
 @inject JwtAuthenticationStateProvider AuthProvider
 
 <div class="top-row ps-3 navbar navbar-dark">
@@ -65,9 +64,10 @@
 
     private async Task Logout()
     {
-        await SessionStorage.ClearAsync();
-        await JS.InvokeVoidAsync("alert","Vous avez été déconnecté avec succès. Paramètres de session effacés.");
+        await SessionStorage.RemoveItemAsync("jwtToken");
+
         AuthProvider.NotifyUserLogout();
+
         Navigation.NavigateTo("/login", true);
     }
 }
