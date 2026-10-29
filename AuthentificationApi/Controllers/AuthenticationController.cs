@@ -26,7 +26,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> Login(string login)
     {
         var client = _httpClientFactory.CreateClient();
-        var user = await client.GetFromJsonAsync<User>($"http://localhost:5025/api/User/{login}");
+        var user = await client.GetFromJsonAsync<User>($"http://gestionordinateurs-api:5025/api/User/{login}");
 
 
         if (user == null)
