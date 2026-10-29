@@ -1,0 +1,63 @@
+@page "/ordinateurs"
+@attribute [Authorize]
+
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Authorization
+
+@inject IHttpClientFactory Factory
+
+<PageTitle>Ordinateurs</PageTitle>
+
+<h1>Ordinateurs</h1>
+
+@if (ordinateurs == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Devise</th>
+                <th>Vendu</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var ordinateur in ordinateurs)
+            {
+                <tr>
+                    <td>@ordinateur.Nom</td>
+                    <td>@ordinateur.Prix</td>
+                    <td>EUR</td>
+                    <td>@ordinateur.Vendu</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code
+{
+    private List<OrdinateurDto>? ordinateurs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = Factory.CreateClient("HttpClientName");
+
+        ordinateurs = await client
+            .GetFromJsonAsync<List<OrdinateurDto>>(
+                "http://localhost:5010/api/Ordinateurs"
+            );
+    }
+
+    public class OrdinateurDto
+    {
+        public string Nom { get; set; } = "";
+        public decimal Prix { get; set; }
+        public bool Vendu { get; set; }
+    }
+}

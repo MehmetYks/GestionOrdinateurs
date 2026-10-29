@@ -1,0 +1,61 @@
+@page "/login"
+
+@using System.Net.Http.Json
+
+@inject IHttpClientFactory HttpClientFactory
+@inject Blazored.SessionStorage.ISessionStorageService SessionStorage
+@inject NavigationManager Navigation
+
+@inject JwtAuthenticationStateProvider AuthProvider
+
+<h3>Login</h3>
+
+<InputText @bind-Value="LoginUser" class="form-control" />
+
+<button class="btn btn-primary mt-2" @onclick="Connexion">Connexion</button>
+
+@if (!string.IsNullOrEmpty(Message))
+{
+    <p>@Message</p>
+}
+
+@code
+{
+    private string LoginUser = "";
+    private string Message = "";
+    private async Task Connexion()
+    {
+        var client = HttpClientFactory.CreateClient();
+
+        var response = await client.PostAsync(
+            $"http://localhost:5161/api/Authentication/login?login={LoginUser}",
+            null
+        );
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Message = "L'utilisateur n'existe pas";
+            return;
+        }
+
+        var resultat = await response.Content.ReadFromJsonAsync<TokenResponse>();
+
+        if (resultat != null)
+        {
+            await SessionStorage.SetItemAsync(
+                "jwtToken",
+                resultat.Token
+            );
+
+            AuthProvider.NotifyUserAuthentication(resultat.Token);
+
+            
+            Navigation.NavigateTo("/");
+        }
+    }
+
+    public class TokenResponse
+    {
+        public string Token { get; set; } = "";
+    }
+}

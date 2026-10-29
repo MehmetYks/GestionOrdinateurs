@@ -1,0 +1,11 @@
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/bin/Debug/net10.0/GestionOrdinateurs.Shared.deps.json
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/bin/Debug/net10.0/GestionOrdinateurs.Shared.dll
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/bin/Debug/net10.0/GestionOrdinateurs.Shared.pdb
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/GestionOrdinateurs.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/GestionOrdinateurs.Shared.AssemblyInfoInputs.cache
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/GestionOrdinateurs.Shared.AssemblyInfo.cs
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/GestionOrdinateurs.Shared.csproj.CoreCompileInputs.cache
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/GestionOrdinateurs.Shared.dll
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/refint/GestionOrdinateurs.Shared.dll
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/GestionOrdinateurs.Shared.pdb
+/Users/mehmetyuksel/Desktop/EFREI_mac/Csh_S7/TP2/GestionOrdinateurs/GestionOrdinateurs.Shared/obj/Debug/net10.0/ref/GestionOrdinateurs.Shared.dll
